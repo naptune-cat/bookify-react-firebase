@@ -12,6 +12,7 @@ const ListingPage = () => {
   const handleClick = (e) => {
     e.preventDefault();
     firebase.handleCreateBookListing(name, IsbnNo, price, coverPic);
+    alert("Book listed in DB!");
   };
   return (
     <div className="container mt-5">

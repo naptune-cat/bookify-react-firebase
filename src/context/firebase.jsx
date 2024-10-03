@@ -8,6 +8,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import {
   addDoc,
@@ -60,7 +61,17 @@ export const FirebaseProvider = (props) => {
   const signinGoogle = () => {
     signInWithPopup(auth, googleProvider);
   };
-
+  //logout
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("User signed out successfully.");
+        setUser(null); // Clear the user from state
+      })
+      .catch((error) => {
+        console.error("Error signing out: ", error);
+      });
+  };
   //handling photo storage
   const handleCreateBookListing = async (name, isbn, price, coverPic) => {
     const imageRef = ref(
@@ -80,7 +91,21 @@ export const FirebaseProvider = (props) => {
       photoUrl: user.photoURL,
     });
   };
+  const handleOrderData = async (name, isbn, price, coverPic, qty) => {
+    //for uploading data in firestore
 
+    return await addDoc(collection(firestore, "ordersList"), {
+      name,
+      isbn,
+      price,
+      imageURL: coverPic,
+      qty: Number(qty),
+      userId: user.uid,
+      displayName: user.displayName,
+      userEmail: user.email,
+      photoUrl: user.photoURL,
+    });
+  };
   const isLoggedin = user ? true : false;
 
   //for reading data from firestore
@@ -111,26 +136,16 @@ export const FirebaseProvider = (props) => {
   };
 
   //query orders
-  const fetchMyOrders = async (userid) => {
-    const collectionRef = collection(firestore, "books");
-    const q = query(collectionRef, where("userId", "==", userid));
-    const result = await getDocs(q);
+  const fetchMyOrders = async () => {
+    const collectionRef = collection(firestore, "ordersList");
+    const result = await getDocs(collectionRef);
     return result;
   };
 
-  const getOrders = async (bookId) => {
-    if (!bookId) {
-      throw new Error("Invalid or undefined bookId");
-    }
-
-    try {
-      const collectionRef = collection(firestore, "books", bookId, "orders");
-      const result = await getDocs(collectionRef);
-      return result.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      throw error;
-    }
+  const getOrders = async () => {
+    const collectionRef = collection(firestore, "ordersList");
+    const result = await getDocs(collectionRef);
+    return result;
   };
   return (
     <firebaseContext.Provider
@@ -147,6 +162,9 @@ export const FirebaseProvider = (props) => {
         fetchMyOrders,
         user,
         getOrders,
+        handleOrderData,
+        logout,
+        auth,
       }}
     >
       {props.children}

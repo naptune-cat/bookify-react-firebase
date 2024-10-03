@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFirebase } from "../context/firebase";
 import Button from "react-bootstrap/esm/Button";
@@ -26,8 +26,10 @@ const Description = () => {
     return <h1>Loading...</h1>;
   }
   const placeOrder = async () => {
-    const result = await firebase.placeOrder(params.bookId, qty);
-    console.log(result);
+    // const result = await firebase.placeOrder(params.bookId, qty);
+    // console.log(result);
+    firebase.handleOrderData(data.name, data.isbn, data.price, url, qty);
+    alert("Added to orders");
   };
   return (
     <div className=" container mt-5  ">
@@ -54,7 +56,16 @@ const Description = () => {
           placeholder="1"
         />
       </Form.Group>
-      <Button onClick={placeOrder} variant="success">
+      <Button
+        onClick={() => {
+          if (firebase.isLoggedin) {
+            placeOrder(); // Call placeOrder function when logged in
+          } else {
+            alert("Please log in first"); // Show an alert if the user isn't logged in
+          }
+        }}
+        variant="success"
+      >
         Buy now
       </Button>
     </div>

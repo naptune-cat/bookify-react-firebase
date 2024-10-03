@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { useFirebase } from "../context/firebase";
 import { useNavigate } from "react-router-dom";
+import "../index.css";
 
 const MyCard = (props) => {
   const firebase = useFirebase();
@@ -12,9 +13,20 @@ const MyCard = (props) => {
     firebase.getImageUrl(props.imageURL).then((url) => setURL(url));
   }, [firebase, props.imageURL]);
   return (
-    <Card style={{ width: "18rem", margin: "5px" }}>
-      <Card.Img variant="top" src={url} />
-      <Card.Body>
+    <Card
+      className="custom-card"
+      style={{
+        maxWidth: "300px",
+        height: "400px",
+        margin: "10px",
+      }}
+    >
+      <Card.Img
+        style={{ height: "auto", maxHeight: "150px", objectFit: "cover" }}
+        variant="top"
+        src={url}
+      />
+      <Card.Body style={{ flexGrow: 1 }}>
         <Card.Title>{props.name}</Card.Title>
         <Card.Text>
           Price : {props.price} <br /> ISBN number: {props.isbn} <br />
