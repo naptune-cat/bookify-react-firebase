@@ -11,7 +11,7 @@ const MyNavbar = () => {
       <Container>
         <Navbar.Brand href="/">Bookify</Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/home">Home</Nav.Link>
           <Nav.Link href="/book/list">Add listings</Nav.Link>
           <Nav.Link href="/book/orders">Orders</Nav.Link>
         </Nav>

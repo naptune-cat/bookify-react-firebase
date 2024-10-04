@@ -12,6 +12,7 @@ import ListingPage from "./pages/List";
 import Home from "./pages/Home";
 import Description from "./pages/Description";
 import Orders from "./pages/Orders";
+import Bookify from "./pages/Bookify";
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
       <div>
         <MyNavbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Bookify />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/book/list" element={<ListingPage />} />
