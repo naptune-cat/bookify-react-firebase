@@ -16,13 +16,17 @@ const MyNavbar = () => {
           <Nav.Link href="/book/orders">Orders</Nav.Link>
         </Nav>
         <Nav className="ms-auto">
-          <Button className="me-2" variant="outline-light" href="/register">
+          <Button
+            className="me-2 yellow"
+            variant="outline-light"
+            href="/register"
+          >
             SignUp
           </Button>
-          <Button variant="outline-light" href="/login">
+          <Button variant="outline-light" className="me-2 yellow" href="/login">
             Login
           </Button>
-          <Button variant="outline-light" onClick={firebase.logout}>
+          <Button variant="danger" className="ms-2" onClick={firebase.logout}>
             Logout
           </Button>
         </Nav>

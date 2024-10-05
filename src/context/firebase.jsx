@@ -1,5 +1,6 @@
 // Firebase setup and context
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -9,6 +10,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import {
   addDoc,
@@ -17,8 +19,6 @@ import {
   getDocs,
   doc,
   getDoc,
-  where,
-  query,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -44,6 +44,7 @@ const googleProvider = new GoogleAuthProvider();
 
 // Firebase Provider component
 export const FirebaseProvider = (props) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -52,9 +53,30 @@ export const FirebaseProvider = (props) => {
     });
   }, []);
   console.log(user);
-  const signup = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password);
+  const signup = async (email, password, name) => {
+    try {
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const newUser = userCredential.user;
+
+      // Set display name in Firebase Auth
+      await updateProfile(newUser, {
+        displayName: name,
+      });
+
+      setUsername(name); // Set the username in state
+      alert("Successfully registered");
+      navigate("/"); // Redirect to "/" after successful signup
+    } catch (error) {
+      console.error("Error signing up: ", error);
+      alert("Signup failed. Please try again.");
+    }
   };
+
   const signin = (email, password) => {
     signInWithEmailAndPassword(auth, email, password);
   };
@@ -80,13 +102,15 @@ export const FirebaseProvider = (props) => {
     );
     //for uploading data in firestore
     const uploadResult = await uploadBytes(imageRef, coverPic);
+
+    // Add the book details to Firestore
     return await addDoc(collection(firestore, "books"), {
       name,
       isbn,
       price,
       imageURL: uploadResult.ref.fullPath,
       userId: user.uid,
-      displayName: user.displayName,
+      displayName: user.displayName || username, // Use displayName or fallback to username
       userEmail: user.email,
       photoUrl: user.photoURL,
     });
@@ -147,6 +171,7 @@ export const FirebaseProvider = (props) => {
     const result = await getDocs(collectionRef);
     return result;
   };
+  const [username, setUsername] = useState("");
   return (
     <firebaseContext.Provider
       value={{
@@ -165,6 +190,7 @@ export const FirebaseProvider = (props) => {
         handleOrderData,
         logout,
         auth,
+        useFirebase,
       }}
     >
       {props.children}

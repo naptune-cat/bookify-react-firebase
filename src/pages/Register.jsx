@@ -6,10 +6,11 @@ import { useFirebase } from "../context/firebase";
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
+  const [name, setName] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await firebase.signup(email, password);
+    const result = await firebase.signup(email, password, name);
     console.log(result);
   };
   const firebase = useFirebase();
@@ -25,11 +26,19 @@ const RegisterPage = () => {
             type="email"
             placeholder="Enter email"
           />
-          <Form.Text className="text-muted">
+          <Form.Text>
             We&rsquo;ll never share your email with anyone else.
           </Form.Text>
         </Form.Group>
-
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Display Name</Form.Label>
+          <Form.Control
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            type="text"
+            placeholder="Display name"
+          />
+        </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
