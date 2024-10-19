@@ -26,7 +26,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/book/list" element={<ListingPage />} />
           {/* : for dynamic id */}
-          <Route path="/book/description/:bookId" element={<Description />} />
+          <Route path="home/book/description/:bookId" element={<Description />} />
           <Route path="/book/orders" element={<Orders />} />
         </Routes>
       </div>

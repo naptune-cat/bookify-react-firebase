@@ -33,7 +33,7 @@ const MyCard = (props) => {
           Sold by: {props.displayName}
         </Card.Text>
         <Button
-          onClick={(e) => navigation(`/book/description/${props.id}`)}
+          onClick={(e) => navigation(`/home/book/description/${props.id}`)}
           variant="primary"
         >
           Description

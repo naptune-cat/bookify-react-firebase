@@ -14,58 +14,62 @@ const ListingPage = () => {
     firebase.handleCreateBookListing(name, IsbnNo, price, coverPic);
     alert("Book listed in DB!");
   };
-  return (
-    <div className="container mt-5">
-      <Form>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Enter Book Name</Form.Label>
-          <Form.Control
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            value={name}
-            type="text"
-            placeholder="Book Name"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>ISBN Number:</Form.Label>
-          <Form.Control
-            onChange={(e) => {
-              setIsbnNo(e.target.value);
-            }}
-            value={IsbnNo}
-            type="text"
-            placeholder="ISBN "
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Price</Form.Label>
-          <Form.Control
-            onChange={(e) => {
-              setprice(e.target.value);
-            }}
-            value={price}
-            type="text"
-            placeholder="Enter Price"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Cover picture</Form.Label>
-          <Form.Control
-            onChange={(e) => {
-              setCoverPic(e.target.files[0]);
-            }}
-            type="file"
-          />
-        </Form.Group>
+  if (firebase.user) {
+    return (
+      <div className="container mt-5">
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Enter Book Name</Form.Label>
+            <Form.Control
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              value={name}
+              type="text"
+              placeholder="Book Name"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>ISBN Number:</Form.Label>
+            <Form.Control
+              onChange={(e) => {
+                setIsbnNo(e.target.value);
+              }}
+              value={IsbnNo}
+              type="text"
+              placeholder="ISBN "
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              onChange={(e) => {
+                setprice(e.target.value);
+              }}
+              value={price}
+              type="text"
+              placeholder="Enter Price"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Cover picture</Form.Label>
+            <Form.Control
+              onChange={(e) => {
+                setCoverPic(e.target.files[0]);
+              }}
+              type="file"
+            />
+          </Form.Group>
 
-        <Button onClick={handleClick} variant="primary" type="submit">
-          Create
-        </Button>
-      </Form>
-    </div>
-  );
+          <Button onClick={handleClick} variant="primary" type="submit">
+            Create
+          </Button>
+        </Form>
+      </div>
+    );
+  } else {
+    return <h1>Please Log in to add book</h1>;
+  }
 };
 
 export default ListingPage;
