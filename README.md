@@ -1,4 +1,4 @@
-Bookify - A Book Search and Order App
+###Bookify - A Book Search and Order App
 Project Overview
 This project, Bookify, is a web application where users can search for books, view detailed descriptions, and place orders. The application is built with React for the frontend and Firebase for the backend. It incorporates features such as Firebase Authentication, Firestore for data management, and Firebase Storage for handling book images.
 
